@@ -209,14 +209,23 @@ export = (ctx: PicGo) => {
         // 如果是token过期了，则请求登陆接口刷新token
         // 如果token过期，则重新登陆获取token
         // 如果没有存储accessToken，则请求登陆接口
-        accessToken = await getAccessTokenByConfig(ctx);
-        ctx.saveConfig({
-          [`picBed.${PluginName}.accessToken`]: accessToken
-        });
-
-        // 请求上传接口
-        const uploadConfig = uploadOptions(haloUrl, accessToken, filename, fileBuffer)
-        uploadBody = await ctx.request(uploadConfig);
+        try {
+          accessToken = await getAccessTokenByConfig(ctx);
+          ctx.saveConfig({
+            [`picBed.${PluginName}.accessToken`]: accessToken
+          });
+  
+          // 请求上传接口
+          const uploadConfig = uploadOptions(haloUrl, accessToken, filename, fileBuffer)
+          uploadBody = await ctx.request(uploadConfig);
+          
+        } catch (error) {
+          ctx.emit('notification', {
+            title: '登陆失败',
+            body: '请检查账号或者密码是否填写正确'
+          })
+          throw new Error('登陆失败，请检查账号或者密码是否填写正确');
+        }
       }
 
       if (uploadBody) {
@@ -229,7 +238,7 @@ export = (ctx: PicGo) => {
           body: '无法获取返回的参数'
         })
 
-        return;
+        throw new Error('上传失败，无法获取返回的参数');
       }
     }
   }
