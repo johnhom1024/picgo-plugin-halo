@@ -110,7 +110,6 @@ async function getAccessTokenByConfig(ctx: PicGo): Promise<string> {
   const loginConfig = loginOptions(haloUrl, username, password, xsrf);
   try {
     const { status = 200, headers = {} } = await ctx.request(loginConfig) as any;
-    console.log('----------johnhomLogDebug status', status === 200);
     if (status === 200) {
       // 这里headers['set-cookie']是一个数组，直接取第一个元素
       const setCookieArr = headers['set-cookie'];
@@ -123,8 +122,6 @@ async function getAccessTokenByConfig(ctx: PicGo): Promise<string> {
        */
 
       const session = setCookie.SESSION;
-
-      console.log('----------johnhomLogDebug session', session);
       accessToken = `SESSION=${session}; XSRF-TOKEN=${xsrf}`;
     }
   } catch (error) {
@@ -192,32 +189,48 @@ export = (ctx: PicGo) => {
   const handle = async (ctx): Promise<void> => {
     const userConfig = ctx.getConfig(`picBed.${PluginName}`) || {};
     let accessToken = userConfig.accessToken;
-    try {
-      // 如果没有存储accessToken，则请求登陆接口
-      if (!accessToken) {
+
+    const fileList = ctx.output;
+    for (const i in fileList) {
+      const file = fileList[i];
+      let fileBuffer = file.buffer;
+      if (!fileBuffer && file.base64Image) {
+        fileBuffer = Buffer.from(file.base64Image, 'base64');
+      }
+      const haloUrl = userConfig.haloUrl;
+      const filename = file.fileName;
+      let uploadBody = null;
+      try {
+        // 请求上传接口
+        const uploadConfig = uploadOptions(haloUrl, accessToken, filename, fileBuffer)
+        uploadBody = await ctx.request(uploadConfig);
+
+      } catch (error) {
+        // 如果是token过期了，则请求登陆接口刷新token
+        // 如果token过期，则重新登陆获取token
+        // 如果没有存储accessToken，则请求登陆接口
         accessToken = await getAccessTokenByConfig(ctx);
         ctx.saveConfig({
           [`picBed.${PluginName}.accessToken`]: accessToken
         });
-      }
-      const fileList = ctx.output;
-      for (const i in fileList) {
-        const file = fileList[i];
-        let fileBuffer = file.buffer;
-        if (!fileBuffer && file.base64Image) {
-          fileBuffer = Buffer.from(file.base64Image, 'base64')
-        }
-        const haloUrl = userConfig.haloUrl;
-        const filename = file.fileName;
-        const uploadConfig = uploadOptions(haloUrl, accessToken, filename, fileBuffer)
+
         // 请求上传接口
-        const uploadBody = await ctx.request(uploadConfig);
+        const uploadConfig = uploadOptions(haloUrl, accessToken, filename, fileBuffer)
+        uploadBody = await ctx.request(uploadConfig);
+      }
+
+      if (uploadBody) {
         const { spec = {} } = uploadBody;
         const { displayName = '' } = spec;
         file.imgUrl = `/upload/${displayName}`;
+      } else {
+        ctx.emit('notification', {
+          title: '上传失败',
+          body: '无法获取返回的参数'
+        })
+
+        return;
       }
-    } catch (error) {
-      throw new Error(error);
     }
   }
 
