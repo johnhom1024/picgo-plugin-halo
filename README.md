@@ -1,8 +1,8 @@
 # picgo-plugin-halo
 
-为[PicGo](https://github.com/Molunerfinn/PicGo)开发的一款插件，一个可以把[halo](https://github.com/halo-dev/halo)博客系统当作图床上传图片的`picgo`插件。支持`halo`目前的`2.3.0`版本
+为[PicGo](https://github.com/Molunerfinn/PicGo)开发的一款插件，一个可以把[halo](https://github.com/halo-dev/halo)博客系统当作图床上传图片的`picgo`插件。
 
-[example.jpg]()
+![image](https://github.com/johnhom1024/picgo-plugin-halo/raw/main/example/1.jpg)
 
 
 ## 在线安装
@@ -25,6 +25,9 @@
 之后你可以直接在halo的文章编辑器中粘贴以使用该附件，如下图所示：
 
 
+## 兼容情况
+
+支持`halo`的`@2.3.0`版本，其他的版本暂未测试。（因为本人只部署了这个版本）
 
 ## 致谢
 
