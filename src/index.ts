@@ -183,7 +183,8 @@ export = (ctx: PicGo) => {
 
   const register = (): void => {
     ctx.helper.uploader.register(PluginName, {
-      handle
+      handle,
+      config
     })
   }
 
@@ -222,7 +223,6 @@ export = (ctx: PicGo) => {
 
   return {
     uploader: PluginName,
-    register,
-    config
+    register
   }
 }
