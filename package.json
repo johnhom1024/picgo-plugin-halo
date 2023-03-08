@@ -20,7 +20,7 @@
     "picgo-plugin",
     "picgo-gui-plugin"
   ],
-  "author": "",
+  "author": "johnhom",
   "license": "MIT",
   "devDependencies": {
     "@johnhom/eslint-config-ts": "^0.3.1",
