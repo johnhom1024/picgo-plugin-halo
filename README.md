@@ -24,7 +24,9 @@
 /upload/<附件的文件名>.<文件后缀>
 ```
 
-之后你可以直接在halo的文章编辑器中粘贴以展示该附件。
+之后你可以直接在halo的文章编辑器中粘贴以展示该附件。如下图：
+
+![image](https://github.com/johnhom1024/picgo-plugin-halo/raw/main/example/uses.jpg)
 
 ## 兼容情况
 
