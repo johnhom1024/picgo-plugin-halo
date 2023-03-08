@@ -1,12 +1,12 @@
 {
   "name": "picgo-plugin-halo",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a picgo plugin",
   "main": "dist/index.js",
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "",
+  "homepage": "https://github.com/johnhom1024/picgo-plugin-halo",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
@@ -17,7 +17,8 @@
   },
   "keywords": [
     "picgo",
-    "picgo-plugin"
+    "picgo-plugin",
+    "picgo-gui-plugin"
   ],
   "author": "",
   "license": "MIT",
