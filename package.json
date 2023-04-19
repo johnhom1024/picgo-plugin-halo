@@ -1,6 +1,6 @@
 {
   "name": "picgo-plugin-halo",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "This is a picgo plugin",
   "main": "dist/index.js",
   "publishConfig": {
@@ -38,6 +38,7 @@
     "eslint-plugin-standard": "^3.1.0",
     "form-data": "^4.0.0",
     "picgo": "^1.5.0-alpha.13",
+    "qs": "^6.11.1",
     "typescript": "^4.8.4"
   }
 }

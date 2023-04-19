@@ -46,6 +46,9 @@ devDependencies:
   picgo:
     specifier: ^1.5.0-alpha.13
     version: 1.5.0-alpha.13
+  qs:
+    specifier: ^6.11.1
+    version: 6.11.1
   typescript:
     specifier: ^4.8.4
     version: 4.8.4
